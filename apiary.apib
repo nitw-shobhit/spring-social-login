@@ -1,0 +1,43 @@
+FORMAT: 1A
+HOST: https://appgrid-staging-api.cloud.accedo.tv
+
+# AppGrid API
+
+This document describes the AppGrid RESTful API, a powerful and lightweight read-only API which
+feeds applications with configuration- and content parameters configured from the AppGrid Admin UI.
+
+## Session Management [/session{?appKey}{?uuid}]
+
+This method is a starting point for any communication with AppGrid APIs and is used to generate a
+session key. A session could be created either by passing parameters via query string or headers. If the
+header approach is chosen, both X-Application-Key and X-User-Id HTTP headers must be provided.
+
+<b>Note:</b> AppGrid does not support mixing of header and query string parameters for this method.
+Application should keep track of the session expiration time and either re-create the session when it’s
+about to expire, or handle session response about invalid/expired session.
+
+### Create a session [GET]
+
++ Request (application/json)
+
++ Parameters
+    + appKey: 53fb8fcbe4b077cb2acaa3a6 (required, string) - Application Key
+    + uuid: some_awesome_value (string, required) - Unique user identifier
+        
++ Response 200 (application/json)
+        
+        {
+            "sessionKey": "165235481e4f358280b7302bb1be34ad13561a48",
+            "expiration": "20160907T19:15:46+0000"
+        }
+
++ Response 400 (application/json)
+
+        {
+            "error":
+            {
+                "message" : "Application is not valid.",
+                "code":"400",
+                "status":"400 BAD REQUEST"
+            }
+        }
